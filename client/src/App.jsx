@@ -9,10 +9,18 @@ import BlogTitles from "./pages/BlogTitles"
 import Community from "./pages/Community"
 import Dashboard from "./pages/Dashboard"
 import GenerateImages from "./pages/GenerateImages"
+import { useAuth } from "@clerk/clerk-react"
+import { useEffect } from "react"
+import {Toaster} from "react-hot-toast"
 
 const App = () => {
+
+  // const {getToken} =useAuth()
+  // useEffect(()=> {getToken().then((token)=>console.log(token))},[])
+
   return (
     <div>
+      <Toaster />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path='/ai' element={<Layout />}>
