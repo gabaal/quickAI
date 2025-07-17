@@ -158,7 +158,7 @@ const {data} = await axios.post('https://clipdrop-api.co/text-to-image/v1', form
 export const removeImageBackground = async (req, res) => {
     try {
         const { userId} = req.auth()
-        const {image} = req.file;
+        const image = req.file;
         const plan = req.plan;
         
 
@@ -177,7 +177,7 @@ export const removeImageBackground = async (req, res) => {
     })
 
 
- await sql `INSERT INTO creations (user_id, prompt, content, type) VALUES (${userId}, $'remove background from image', ${secure_url}, 'image')`;
+ await sql `INSERT INTO creations (user_id, prompt, content, type) VALUES (${userId}, 'remove background from image', ${secure_url}, 'image')`;
         
 
         res.json({
@@ -198,8 +198,8 @@ export const removeImageBackground = async (req, res) => {
 export const removeImageObject = async (req, res) => {
     try {
         const { userId} = req.auth()
-        const { object} = req.body()
-        const {image} = req.file;
+        const { object} = req.body
+        const image = req.file;
         const plan = req.plan;
        
         
@@ -226,7 +226,7 @@ export const removeImageObject = async (req, res) => {
 
         res.json({
             success: true,
-            content: image_url
+            content: imageUrl
 });
 
 
