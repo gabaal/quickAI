@@ -1,15 +1,36 @@
 import { useEffect, useState } from "react"
 import { dummyCreationData } from "../assets/assets"
 import { Gem, Sparkles } from "lucide-react"
-import { Protect } from "@clerk/clerk-react"
+import { Protect, useAuth } from "@clerk/clerk-react"
 import CreationItem from "../components/CreationItem"
+import axios from "axios"
+
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL
 
 const Dashboard = () => {
 
   const [creations, setCreations] = useState([])
+  const [loading, setLoading] = useState(true)
+  const { user } = useAuth()
+
+  const { getToken } = useAuth()
 
   const getDashboardData = async () => {
-    setCreations(dummyCreationData)
+   try {
+    const {data} = await axios.get('/api/user/get-user-creations', {
+      headers: {
+        Authorization: `Bearer ${await getToken()}`
+      }
+    })
+
+    if (data.success) {
+      setCreations(data.creations)
+    } else {
+      console.error(data.message || "Failed to fetch creations")
+    }
+   } catch (error) {
+     console.error("An error occurred while fetching dashboard data")
+   }
   }
 
   useEffect(() => { getDashboardData() }, [])
@@ -34,6 +55,8 @@ const Dashboard = () => {
           <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#ff61c5] to-[#9e53ee] text-white flex justify-center items-center"><Gem className="w-5 text-white" /> </div>
         </div>
       </div>
+
+      
 <div className="space-y-3">
   <p className="mt-6 mb-4">Recent Creations</p>
   {
